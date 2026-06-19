@@ -9,40 +9,38 @@ import Home from './pages/Home'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import Courses from './pages/Courses'
+import Resources from './pages/Resources'
+import Quizzes from './pages/Quizzes'
+import Roadmaps from './pages/Roadmaps'
 import Counseling from './pages/Counseling'
 import Hackathons from './pages/Hackathons'
+import Internships from './pages/Internships'
+import Mentorship from './pages/Mentorship'
+import SuccessStories from './pages/SuccessStories'
 import UserDashboard from './pages/UserDashboard'
 import AdminDashboard from './pages/AdminDashboard'
-import { useEffect } from 'react'
 
 // Apply saved dark mode preference on load
 const applyTheme = () => {
   const saved = localStorage.getItem('skills021_theme')
-  if (saved === 'dark') {
-    document.documentElement.classList.add('dark')
-  } else {
-    document.documentElement.classList.remove('dark')
-  }
+  if (saved === 'dark') document.documentElement.classList.add('dark')
+  else document.documentElement.classList.remove('dark')
 }
 applyTheme()
 
 const pageVariants = {
-  initial: { opacity: 0, y: 12 },
+  initial: { opacity: 0, y: 10 },
   in: { opacity: 1, y: 0 },
-  out: { opacity: 0, y: -12 },
+  out: { opacity: 0, y: -10 },
 }
 
-const pageTransition = {
-  type: 'tween',
-  ease: 'easeInOut',
-  duration: 0.25,
-}
+const pageTransition = { type: 'tween', ease: 'easeInOut', duration: 0.22 } as const
+
+const noFooterRoutes = ['/dashboard', '/admin']
 
 function AnimatedRoutes() {
   const location = useLocation()
-
-  const noFooterRoutes = ['/dashboard', '/admin']
-  const showFooter = !noFooterRoutes.some((r) => location.pathname.startsWith(r))
+  const showFooter = !noFooterRoutes.some(r => location.pathname.startsWith(r))
 
   return (
     <>
@@ -60,25 +58,25 @@ function AnimatedRoutes() {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            {/* Courses */}
             <Route path="/courses" element={<Courses />} />
+            {/* Resources */}
+            <Route path="/resources" element={<Resources />} />
+            <Route path="/quizzes" element={<Quizzes />} />
+            <Route path="/roadmaps" element={<Roadmaps />} />
+            {/* Counseling */}
             <Route path="/counseling" element={<Counseling />} />
+            {/* Events */}
             <Route path="/hackathons" element={<Hackathons />} />
-            <Route
-              path="/dashboard"
-              element={
-                <ProtectedRoute>
-                  <UserDashboard />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/admin"
-              element={
-                <AdminRoute>
-                  <AdminDashboard />
-                </AdminRoute>
-              }
-            />
+            <Route path="/internships" element={<Internships />} />
+            {/* Mentorship */}
+            <Route path="/mentorship" element={<Mentorship />} />
+            {/* Stories */}
+            <Route path="/success-stories" element={<SuccessStories />} />
+            {/* Protected */}
+            {/* Protected */}
+            <Route path="/dashboard" element={<ProtectedRoute><UserDashboard /></ProtectedRoute>} />
+            <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
           </Routes>
         </motion.div>
       </AnimatePresence>
@@ -102,18 +100,8 @@ export default function App() {
             border: '1px solid #2A2A3D',
             fontSize: '14px',
           },
-          success: {
-            iconTheme: {
-              primary: '#00BFA6',
-              secondary: '#fff',
-            },
-          },
-          error: {
-            iconTheme: {
-              primary: '#EF4444',
-              secondary: '#fff',
-            },
-          },
+          success: { iconTheme: { primary: '#00BFA6', secondary: '#fff' } },
+          error: { iconTheme: { primary: '#EF4444', secondary: '#fff' } },
         }}
       />
     </BrowserRouter>
