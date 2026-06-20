@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Zap, Play, Globe, Link2, Mail, BookOpen, FileText, Trophy, Briefcase, Users, Star, GraduationCap, Map, HelpCircle } from 'lucide-react'
+import { Play, Globe, Link2, Mail, BookOpen, FileText, Trophy, Briefcase, Users, HelpCircle } from 'lucide-react'
 
 const footerLinks = [
   {
@@ -50,16 +50,13 @@ const footerLinks = [
 
 export default function Footer() {
   return (
-    <footer className="bg-[#0D0D1A] text-white border-t border-white/10">
+    <footer className="bg-[#0A0A0A] text-white border-t border-white/5">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
           {/* Brand */}
           <div className="lg:col-span-1">
-            <Link to="/" className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-teal-500 rounded-lg flex items-center justify-center">
-                <Zap size={18} className="text-white" />
-              </div>
-              <span className="text-xl font-bold text-white">Skill021</span>
+            <Link to="/" className="inline-block mb-5">
+              <span className="text-xl font-black text-white tracking-tight">SKILL021</span>
             </Link>
             <p className="text-sm text-gray-400 leading-relaxed mb-6">
               India's complete EdTech ecosystem — courses, resources, counseling, hackathons, internships and mentorship. All in one place.
@@ -84,17 +81,17 @@ export default function Footer() {
               ))}
             </div>
             <div className="flex items-center gap-2">
-              <a href="https://www.youtube.com/@skills021" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-lg bg-white/10 hover:bg-red-600 flex items-center justify-center transition-colors" aria-label="YouTube">
-                <Play size={16} />
+              <a href="https://www.youtube.com/@skills021" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center transition-colors" aria-label="YouTube">
+                <Play size={15} />
               </a>
-              <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-lg bg-white/10 hover:bg-gray-700 flex items-center justify-center transition-colors" aria-label="GitHub">
-                <Globe size={16} />
+              <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center transition-colors" aria-label="GitHub">
+                <Globe size={15} />
               </a>
-              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-lg bg-white/10 hover:bg-blue-600 flex items-center justify-center transition-colors" aria-label="LinkedIn">
-                <Link2 size={16} />
+              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="w-9 h-9 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center transition-colors" aria-label="LinkedIn">
+                <Link2 size={15} />
               </a>
-              <a href="mailto:contact@skill021.com" className="w-9 h-9 rounded-lg bg-white/10 hover:bg-primary-500 flex items-center justify-center transition-colors" aria-label="Email">
-                <Mail size={16} />
+              <a href="mailto:contact@skill021.com" className="w-9 h-9 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center transition-colors" aria-label="Email">
+                <Mail size={15} />
               </a>
             </div>
           </div>
@@ -106,7 +103,7 @@ export default function Footer() {
               <ul className="space-y-2.5">
                 {col.links.map(link => (
                   <li key={link.label}>
-                    <Link to={link.to} className="text-sm text-gray-400 hover:text-primary-400 transition-colors duration-200">
+                    <Link to={link.to} className="text-sm text-gray-400 hover:text-white transition-colors duration-200">
                       {link.label}
                     </Link>
                   </li>
@@ -117,13 +114,13 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-12 pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="mt-12 pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-sm text-gray-500">
             © 2025 Skill021. All rights reserved. Made with ❤️ for Indian students.
           </p>
           <div className="flex items-center gap-6 text-xs text-gray-500">
             <span>🇮🇳 India</span>
-            <a href="https://www.youtube.com/@skills021" target="_blank" rel="noopener noreferrer" className="hover:text-red-400 transition-colors">YouTube Channel</a>
+            <a href="https://www.youtube.com/@skills021" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">YouTube Channel</a>
             <span>100% Dynamic Platform</span>
           </div>
         </div>

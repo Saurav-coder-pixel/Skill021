@@ -13,7 +13,7 @@
   }
 
   body {
-    @apply bg-brand-bg text-brand-text dark:bg-brand-dark-bg dark:text-brand-dark-text antialiased;
+    @apply bg-white text-brand-text dark:bg-brand-dark-bg dark:text-brand-dark-text antialiased;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -22,51 +22,70 @@
 }
 
 @layer components {
+  /* ── Primary black button (Notion/Linear style) */
   .btn-primary {
-    @apply inline-flex items-center gap-2 px-6 py-3 bg-primary-500 text-white font-semibold rounded-xl hover:bg-primary-600 transition-all duration-200 shadow-sm hover:shadow-card-hover;
+    @apply inline-flex items-center gap-2 px-6 py-3 bg-[#0A0A0A] text-white font-semibold rounded-xl hover:bg-gray-800 transition-all duration-200;
   }
 
+  /* ── Outlined black button */
   .btn-outline {
-    @apply inline-flex items-center gap-2 px-6 py-3 border-2 border-primary-500 text-primary-500 font-semibold rounded-xl hover:bg-primary-500 hover:text-white transition-all duration-200;
+    @apply inline-flex items-center gap-2 px-6 py-3 border border-[#0A0A0A] text-[#0A0A0A] bg-white font-semibold rounded-xl hover:bg-gray-50 transition-all duration-200;
   }
 
-  .btn-teal {
-    @apply inline-flex items-center gap-2 px-6 py-3 border-2 border-teal-500 text-teal-500 font-semibold rounded-xl hover:bg-teal-500 hover:text-white transition-all duration-200;
+  /* ── Blue accent button */
+  .btn-blue {
+    @apply inline-flex items-center gap-2 px-6 py-3 bg-primary-500 text-white font-semibold rounded-xl hover:bg-primary-600 transition-all duration-200;
   }
 
+  /* ── Universal card */
   .card {
     @apply bg-white dark:bg-brand-dark-card rounded-2xl shadow-card border border-brand-border dark:border-brand-dark-border transition-all duration-200 hover:shadow-card-hover;
   }
 
+  /* ── Badge */
   .badge {
     @apply inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold;
   }
 
+  /* ── Section headings */
   .section-title {
-    @apply text-3xl md:text-4xl font-bold text-brand-text dark:text-brand-dark-text;
+    @apply text-3xl md:text-4xl font-bold text-brand-text dark:text-brand-dark-text tracking-tight;
   }
 
   .section-subtitle {
-    @apply text-brand-muted dark:text-brand-dark-muted text-lg mt-3;
+    @apply text-brand-muted dark:text-brand-dark-muted text-lg mt-3 font-normal;
+  }
+
+  /* ── Input */
+  .input {
+    @apply w-full px-4 py-3 rounded-xl border border-brand-border dark:border-brand-dark-border bg-white dark:bg-brand-dark-card text-brand-text dark:text-brand-dark-text placeholder-brand-muted dark:placeholder-brand-dark-muted focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all;
   }
 }
 
 /* Custom scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 5px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #F8F9FF;
+  background: #F9FAFB;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #6C63FF;
+  background: #D1D5DB;
   border-radius: 3px;
 }
 
+::-webkit-scrollbar-thumb:hover {
+  background: #9CA3AF;
+}
+
 .dark ::-webkit-scrollbar-track {
-  background: #0F0F1A;
+  background: #0A0A0F;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #1E1E2E;
 }
 
 /* Progress bar animation */
@@ -77,23 +96,6 @@
 
 .progress-bar {
   animation: progressFill 1s ease-out forwards;
-}
-
-/* Gradient text */
-.gradient-text {
-  background: linear-gradient(135deg, #6C63FF 0%, #00BFA6 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* Orb glow effect */
-.orb {
-  border-radius: 50%;
-  filter: blur(80px);
-  opacity: 0.4;
-  position: absolute;
-  pointer-events: none;
 }
 
 /* No scrollbar utility */

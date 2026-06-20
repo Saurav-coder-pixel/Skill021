@@ -1,7 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, useInView } from 'framer-motion'
-import { Target, Building2, Trophy, ArrowRight, Play, Star, ChevronRight, Zap, Code2, Users2, Video, GraduationCap, MessageCircle } from 'lucide-react'
+import {
+  Target, Building2, Trophy, ArrowRight, Play,
+  ChevronRight, Code2, Users2, Video, GraduationCap, BookOpen,
+  FileText, Briefcase
+} from 'lucide-react'
 import CourseCard from '../components/CourseCard'
 import HackathonCard from '../components/HackathonCard'
 import { courses } from '../data/courses'
@@ -32,12 +36,12 @@ function useCountUp(target: number, duration = 2000) {
   return { count, ref }
 }
 
-// ─── Stat Card (bottom row, matching reference) ─────────────────────────────
+// ─── Stat Card ───────────────────────────────────────────────────────────────
 function StatCard({
-  value, suffix, label, sublabel, icon: Icon, iconBg, iconColor,
+  value, suffix, label, sublabel, icon: Icon,
 }: {
   value: number; suffix: string; label: string; sublabel: string
-  icon: typeof Users2; iconBg: string; iconColor: string
+  icon: typeof Users2;
 }) {
   const { count, ref } = useCountUp(value)
   return (
@@ -47,10 +51,10 @@ function StatCard({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.45 }}
-      className="bg-white dark:bg-brand-dark-card rounded-2xl shadow-card border border-brand-border dark:border-brand-dark-border px-6 py-5 flex items-center gap-4"
+      className="bg-white dark:bg-brand-dark-card rounded-2xl border border-brand-border dark:border-brand-dark-border px-6 py-5 flex items-center gap-4"
     >
-      <div className={`w-12 h-12 rounded-xl ${iconBg} flex items-center justify-center flex-shrink-0`}>
-        <Icon size={24} className={iconColor} />
+      <div className="w-12 h-12 rounded-xl bg-primary-50 dark:bg-primary-900/20 flex items-center justify-center flex-shrink-0">
+        <Icon size={22} className="text-primary-500" />
       </div>
       <div>
         <div className="text-2xl font-black text-brand-text dark:text-brand-dark-text leading-none">
@@ -63,38 +67,20 @@ function StatCard({
   )
 }
 
-// Decorative floating badge shown near the illustration
-function FloatingBadge({ children, className }: { children: React.ReactNode; className?: string }) {
-  return (
-    <motion.div
-      animate={{ y: [0, -6, 0] }}
-      transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-      className={`absolute bg-white dark:bg-brand-dark-card rounded-2xl shadow-card-hover border border-brand-border dark:border-brand-dark-border px-3 py-2.5 flex items-center gap-2 ${className}`}
-    >
-      {children}
-    </motion.div>
-  )
-}
-
-const avatarColors = ['#6C63FF', '#10B981', '#F59E0B', '#EF4444', '#00BFA6']
-const avatarInitials = ['AR', 'SG', 'RK', 'PV', 'AK']
-
 const testimonials = [
   {
     name: 'Ankit Rawat',
     college: 'ABES Engineering College, AKTU',
-    quote: 'Skills021 completely transformed my DSA preparation. Got placed at TCS with ₹7 LPA package!',
+    quote: 'Skill021 completely transformed my DSA preparation. Got placed at TCS with ₹7 LPA package!',
     rating: 5,
     initials: 'AR',
-    color: '#6C63FF',
   },
   {
     name: 'Sneha Gupta',
     college: 'MSIT, IP University',
-    quote: 'The IPU counseling session was incredibly detailed. Got into my first-choice branch thanks to Skills021!',
+    quote: 'The IPU counseling session was incredibly detailed. Got into my first-choice branch thanks to Skill021!',
     rating: 5,
     initials: 'SG',
-    color: '#10B981',
   },
   {
     name: 'Rohit Kumar',
@@ -102,71 +88,52 @@ const testimonials = [
     quote: 'JAC Delhi cutoff analysis was spot-on. The Java + DSA combo course got me ready for placements.',
     rating: 5,
     initials: 'RK',
-    color: '#00BFA6',
   },
 ]
 
 export default function Home() {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-white dark:bg-brand-dark-bg">
 
       {/* ═══════════════════════════════════════════════
-          HERO SECTION — Light theme, two-column layout
+          HERO SECTION — Clean white, minimal
           ═══════════════════════════════════════════════ */}
-      <section className="relative bg-[#EEF0FF] dark:bg-[#13132A] overflow-hidden pt-24 pb-0 min-h-[92vh] flex flex-col">
+      <section className="relative bg-white dark:bg-brand-dark-bg overflow-hidden pt-24 pb-0 min-h-[92vh] flex flex-col">
 
-        {/* Subtle background orbs */}
+        {/* Subtle grid pattern background */}
         <div
-          className="absolute top-[-120px] right-[-80px] w-[500px] h-[500px] rounded-full opacity-20 pointer-events-none"
-          style={{ background: 'radial-gradient(circle, #6C63FF 0%, transparent 70%)' }}
-        />
-        <div
-          className="absolute bottom-0 left-[-60px] w-[300px] h-[300px] rounded-full opacity-10 pointer-events-none"
-          style={{ background: 'radial-gradient(circle, #00BFA6 0%, transparent 70%)' }}
+          className="absolute inset-0 opacity-[0.025] dark:opacity-[0.04] pointer-events-none"
+          style={{
+            backgroundImage: 'linear-gradient(#0A0A0A 1px, transparent 1px), linear-gradient(to right, #0A0A0A 1px, transparent 1px)',
+            backgroundSize: '48px 48px',
+          }}
         />
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex-1 flex flex-col">
-          <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center py-8 lg:py-12">
+          <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center py-8 lg:py-16">
 
             {/* ── LEFT: Text Content ── */}
             <div className="flex flex-col items-start">
-
-              {/* Badge pill */}
-              <motion.div
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-                className="inline-flex items-center gap-2 bg-white dark:bg-white/10 border border-primary-100 dark:border-white/20 rounded-full px-4 py-2 text-sm font-medium text-[#1A1A2E] dark:text-gray-200 mb-7 shadow-sm"
-              >
-                <Zap size={14} className="text-primary-500" />
-                India's #1 Platform for CS Students
-              </motion.div>
 
               {/* Main headline */}
               <motion.h1
                 initial={{ opacity: 0, y: 24 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.08 }}
-                className="text-5xl sm:text-6xl lg:text-[64px] font-black text-[#1A1A2E] dark:text-[#F1F1FF] leading-[1.1] tracking-tight mb-6"
+                transition={{ duration: 0.6, delay: 0.05 }}
+                className="text-5xl sm:text-6xl lg:text-[68px] font-black text-[#0A0A0A] dark:text-white leading-[1.05] tracking-tight mb-6"
               >
-                Learn.{' '}
-                <span className="text-primary-500">Build.</span>
-                <br />
-                Get Placed.
+                Learn Skills<br />
+                <span className="text-primary-500">from 0 to 1</span>
               </motion.h1>
 
               {/* Sub-headline */}
               <motion.p
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.16 }}
-                className="text-base md:text-[17px] text-[#6B7280] dark:text-gray-400 leading-relaxed mb-8 max-w-lg"
+                transition={{ duration: 0.6, delay: 0.15 }}
+                className="text-base md:text-[17px] text-brand-muted dark:text-brand-dark-muted leading-relaxed mb-8 max-w-lg"
               >
-                Build Skills From{' '}
-                {/* <br /> */}
-                <span className="text-red-500 font-semibold">Zero</span>{'-'}
-                <span className="text-teal-500 font-semibold">To</span>{'-'}
-                <span className="text-green-600 font-semibold">One</span>{' '}
+                Learn skills, access quality resources, participate in hackathons, receive expert guidance, and accelerate your career journey.
               </motion.p>
 
               {/* CTA Buttons */}
@@ -174,14 +141,12 @@ export default function Home() {
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.24 }}
-                className="flex flex-wrap items-center gap-4 mb-10"
+                className="flex flex-wrap items-center gap-4 mb-12"
               >
                 <Link to="/courses">
                   <motion.button
                     whileTap={{ scale: 0.97 }}
-                    whileHover={{ scale: 1.02 }}
-                    className="flex items-center gap-2.5 px-7 py-3.5 bg-primary-500 text-white font-bold rounded-xl text-base shadow-lg hover:bg-primary-600 transition-all duration-200"
-                    style={{ boxShadow: '0 8px 24px rgba(108,99,255,0.3)' }}
+                    className="flex items-center gap-2.5 px-7 py-3.5 bg-[#0A0A0A] dark:bg-white text-white dark:text-black font-semibold rounded-xl text-base hover:bg-gray-800 dark:hover:bg-gray-100 transition-all duration-200"
                   >
                     Explore Courses
                     <ArrowRight size={18} />
@@ -190,77 +155,43 @@ export default function Home() {
                 <Link to="/counseling">
                   <motion.button
                     whileTap={{ scale: 0.97 }}
-                    whileHover={{ scale: 1.02 }}
-                    className="flex items-center gap-2.5 px-7 py-3.5 bg-white dark:bg-white/10 border border-[#E5E7EB] dark:border-white/20 text-[#1A1A2E] dark:text-gray-200 font-bold rounded-xl text-base hover:border-primary-300 hover:bg-primary-50/60 dark:hover:bg-white/20 transition-all duration-200"
+                    className="flex items-center gap-2.5 px-7 py-3.5 bg-white dark:bg-transparent border border-[#0A0A0A] dark:border-white text-[#0A0A0A] dark:text-white font-semibold rounded-xl text-base hover:bg-gray-50 dark:hover:bg-white/10 transition-all duration-200"
                   >
-                    Get Counseling
-                    <MessageCircle size={18} className="text-primary-500" />
+                    Get Guidance
                   </motion.button>
                 </Link>
               </motion.div>
 
-              {/* Social proof — Avatars + Rating */}
+              {/* Minimal trust indicator */}
               <motion.div
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.32 }}
-                className="flex items-center gap-5"
+                className="flex items-center gap-3"
               >
-                {/* Stacked avatars */}
-                <div className="flex items-center">
-                  {avatarInitials.map((initials, i) => (
-                    <div
-                      key={initials}
-                      className="w-9 h-9 rounded-full border-2 border-[#EEF0FF] dark:border-[#13132A] flex items-center justify-center text-white text-xs font-bold flex-shrink-0"
-                      style={{
-                        backgroundColor: avatarColors[i],
-                        marginLeft: i === 0 ? 0 : -10,
-                        zIndex: avatarInitials.length - i,
-                      }}
-                    >
-                      {initials[0]}
-                    </div>
-                  ))}
-                  <div
-                    className="w-9 h-9 rounded-full border-2 border-[#EEF0FF] dark:border-[#13132A] bg-primary-50 dark:bg-primary-900/40 flex items-center justify-center text-primary-600 text-xs font-bold"
-                    style={{ marginLeft: -10 }}
-                  >
-                    12K+
-                  </div>
-                </div>
-
-                {/* Rating */}
-                <div>
-                  <div className="flex items-center gap-1 mb-0.5">
-                    {[1, 2, 3, 4].map(i => (
-                      <Star key={i} size={15} className="text-amber-400 fill-amber-400" />
-                    ))}
-                    <Star size={15} className="text-amber-400 fill-amber-400 opacity-60" />
-                    <span className="ml-1 text-sm font-bold text-[#1A1A2E] dark:text-gray-200">4.8/5</span>
-                  </div>
-                  <p className="text-xs text-[#6B7280] dark:text-gray-500">Trusted by 12,000+ students</p>
-                </div>
+                <p className="text-sm text-brand-muted dark:text-brand-dark-muted">
+                  Trusted by <span className="font-semibold text-brand-text dark:text-brand-dark-text">12,000+ students</span> across India
+                </p>
               </motion.div>
             </div>
 
-            {/* ── RIGHT: 3D Illustration ── */}
+            {/* ── RIGHT: Illustration ── */}
             <motion.div
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.7, delay: 0.2 }}
               className="relative flex items-center justify-center"
             >
-              {/* Illustration container with subtle glow bg */}
               <div className="relative w-full max-w-[520px] mx-auto">
-                {/* Soft circle behind illustration */}
+                {/* Soft blue glow – subtle */}
                 <div
-                  className="absolute inset-[5%] rounded-full opacity-30 blur-3xl"
-                  style={{ background: 'radial-gradient(circle, #C7C4FF 0%, transparent 70%)' }}
+                  className="absolute inset-[10%] rounded-full opacity-10 blur-3xl pointer-events-none"
+                  style={{ background: 'radial-gradient(circle, #2563EB 0%, transparent 70%)' }}
                 />
                 <motion.img
                   src="/hero-illustration.png"
-                  alt="Skills021 — Learn. Build. Get Placed."
-                  className="relative z-10 w-full h-auto drop-shadow-2xl select-none"
+                  alt="Skill021 — Learn Skills from 0 to 1"
+                  className="relative z-10 w-full h-auto drop-shadow-xl select-none"
                   animate={{ y: [0, -8, 0] }}
                   transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
                   draggable={false}
@@ -273,20 +204,20 @@ export default function Home() {
           <div className="pb-8 lg:pb-12 mt-4">
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
               <StatCard
-                value={12000} suffix="+" label="Happy Students" sublabel="Growing community of learners"
-                icon={Users2} iconBg="bg-primary-100 dark:bg-primary-900/30" iconColor="text-primary-500"
+                value={12000} suffix="+" label="Students" sublabel="Growing community"
+                icon={Users2}
               />
               <StatCard
                 value={150} suffix="+" label="Video Lectures" sublabel="High quality content"
-                icon={Video} iconBg="bg-teal-100 dark:bg-teal-900/30" iconColor="text-teal-500"
+                icon={Video}
               />
               <StatCard
                 value={4} suffix="+" label="University Programs" sublabel="AKTU, IPU, JoSAA, JAC Delhi"
-                icon={GraduationCap} iconBg="bg-violet-100 dark:bg-violet-900/30" iconColor="text-violet-500"
+                icon={GraduationCap}
               />
               <StatCard
                 value={100} suffix="+" label="Hackathon Updates" sublabel="Stay ahead & build"
-                icon={Trophy} iconBg="bg-amber-100 dark:bg-amber-900/30" iconColor="text-amber-500"
+                icon={Trophy}
               />
             </div>
           </div>
@@ -294,30 +225,24 @@ export default function Home() {
       </section>
 
       {/* ─── FEATURES STRIP ─── */}
-      <section className="py-16 bg-white dark:bg-brand-dark-bg">
+      <section className="py-16 bg-gray-50 dark:bg-brand-dark-card border-y border-gray-100 dark:border-brand-dark-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
               {
                 icon: Target,
                 title: 'Expert-Led Courses',
-                desc: 'Build Skill from',
-                color: 'text-primary-500',
-                bg: 'bg-primary-50 dark:bg-primary-900/20',
+                desc: 'Master CS fundamentals, DSA, web development, AI/ML and more — taught by industry professionals.',
               },
               {
                 icon: Building2,
                 title: 'University Counseling',
-                desc: 'Zero to One',
-                color: 'text-teal-500',
-                bg: 'bg-teal-50 dark:bg-teal-900/20',
+                desc: 'Get expert guidance for AKTU, IPU, JoSAA, and JAC Delhi counseling rounds. 3,000+ students helped.',
               },
               {
                 icon: Trophy,
                 title: 'Hackathon Hub',
                 desc: 'Stay updated with the latest hackathons and coding competitions. Find opportunities matching your skills.',
-                color: 'text-amber-500',
-                bg: 'bg-amber-50 dark:bg-amber-900/20',
               },
             ].map((feature, i) => (
               <motion.div
@@ -326,12 +251,12 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: i * 0.1 }}
-                className="card p-6 text-center group hover:-translate-y-1 transition-transform duration-300"
+                className="bg-white dark:bg-brand-dark-bg rounded-2xl border border-gray-100 dark:border-brand-dark-border p-6 hover:-translate-y-1 transition-transform duration-300"
               >
-                <div className={`w-14 h-14 ${feature.bg} rounded-2xl flex items-center justify-center mx-auto mb-4`}>
-                  <feature.icon size={28} className={feature.color} />
+                <div className="w-12 h-12 bg-gray-100 dark:bg-white/10 rounded-xl flex items-center justify-center mb-4">
+                  <feature.icon size={24} className="text-primary-500" />
                 </div>
-                <h3 className="text-lg font-bold text-brand-text dark:text-brand-dark-text mb-2">{feature.title}</h3>
+                <h3 className="text-base font-bold text-brand-text dark:text-brand-dark-text mb-2">{feature.title}</h3>
                 <p className="text-sm text-brand-muted dark:text-brand-dark-muted leading-relaxed">{feature.desc}</p>
               </motion.div>
             ))}
@@ -340,7 +265,7 @@ export default function Home() {
       </section>
 
       {/* ─── FEATURED COURSES ─── */}
-      <section className="py-16 bg-brand-bg dark:bg-brand-dark-card">
+      <section className="py-16 bg-white dark:bg-brand-dark-bg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between mb-10">
             <div>
@@ -351,7 +276,7 @@ export default function Home() {
               to="/courses"
               className="hidden md:flex items-center gap-1 text-sm font-semibold text-primary-500 hover:gap-2 transition-all duration-200"
             >
-              View All Courses <ChevronRight size={16} />
+              View All <ChevronRight size={16} />
             </Link>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -370,28 +295,35 @@ export default function Home() {
       </section>
 
       {/* ─── COUNSELING BANNER ─── */}
-      <section className="py-16 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-primary-500 to-teal-500" />
+      <section className="py-16 bg-[#0A0A0A] dark:bg-brand-dark-card relative overflow-hidden">
+        {/* Subtle grid */}
+        <div
+          className="absolute inset-0 opacity-[0.06] pointer-events-none"
+          style={{
+            backgroundImage: 'linear-gradient(white 1px, transparent 1px), linear-gradient(to right, white 1px, transparent 1px)',
+            backgroundSize: '48px 48px',
+          }}
+        />
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-6">
-              <GraduationCap size={32} className="text-white" />
-            </div>
+            <span className="inline-block px-3 py-1 text-xs font-semibold text-white/60 border border-white/20 rounded-full mb-6 tracking-widest uppercase">
+              University Counseling
+            </span>
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
               Confused about college admissions?
             </h2>
-            <p className="text-lg text-white/80 max-w-2xl mx-auto mb-8">
+            <p className="text-lg text-white/60 max-w-2xl mx-auto mb-8">
               Get expert guidance for AKTU, IPU, JoSAA, and JAC Delhi counseling rounds.
               Our experts have helped 3,000+ students get into their dream colleges.
             </p>
             <Link to="/counseling">
               <motion.button
                 whileTap={{ scale: 0.97 }}
-                className="inline-flex items-center gap-2 px-8 py-4 bg-white text-primary-600 font-bold rounded-2xl text-base hover:bg-gray-50 transition-all duration-200 shadow-lg"
+                className="inline-flex items-center gap-2 px-8 py-4 bg-white text-[#0A0A0A] font-bold rounded-xl text-base hover:bg-gray-100 transition-all duration-200"
               >
                 Start Counseling <ArrowRight size={18} />
               </motion.button>
@@ -401,7 +333,7 @@ export default function Home() {
       </section>
 
       {/* ─── LATEST HACKATHONS ─── */}
-      <section className="py-16 bg-brand-bg dark:bg-brand-dark-bg">
+      <section className="py-16 bg-white dark:bg-brand-dark-bg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between mb-10">
             <div>
@@ -431,11 +363,11 @@ export default function Home() {
       </section>
 
       {/* ─── YOUTUBE SECTION ─── */}
-      <section className="py-16 bg-white dark:bg-brand-dark-card">
+      <section className="py-16 bg-gray-50 dark:bg-brand-dark-card border-y border-gray-100 dark:border-brand-dark-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-2xl mx-auto text-center">
-            <div className="w-20 h-20 bg-red-50 dark:bg-red-900/20 rounded-3xl flex items-center justify-center mx-auto mb-6">
-              <Play size={40} className="text-red-500" />
+            <div className="w-14 h-14 bg-[#0A0A0A] rounded-2xl flex items-center justify-center mx-auto mb-6">
+              <Play size={26} className="text-white ml-0.5" />
             </div>
             <h2 className="section-title mb-4">Free Tutorials on YouTube</h2>
             <p className="text-brand-muted dark:text-brand-dark-muted mb-8 text-lg">
@@ -447,18 +379,17 @@ export default function Home() {
                 href="https://www.youtube.com/@skills021"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 px-8 py-4 bg-red-600 text-white font-bold rounded-2xl hover:bg-red-700 transition-all duration-200 shadow-sm w-full sm:w-auto justify-center"
+                className="flex items-center gap-2 px-8 py-4 bg-[#0A0A0A] text-white font-semibold rounded-xl hover:bg-gray-800 transition-all duration-200 w-full sm:w-auto justify-center"
               >
-                <Play size={20} />
+                <Play size={18} />
                 Subscribe Now
               </a>
               <a
                 href="https://www.youtube.com/@skills021"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 px-8 py-4 border-2 border-red-200 dark:border-red-900/30 text-red-600 dark:text-red-400 font-bold rounded-2xl hover:bg-red-50 dark:hover:bg-red-900/20 transition-all duration-200 w-full sm:w-auto justify-center"
+                className="flex items-center gap-2 px-8 py-4 border border-gray-300 dark:border-brand-dark-border text-brand-text dark:text-brand-dark-text font-semibold rounded-xl hover:bg-gray-100 dark:hover:bg-white/5 transition-all duration-200 w-full sm:w-auto justify-center"
               >
-                <Play size={18} />
                 Watch Tutorials
               </a>
             </div>
@@ -470,7 +401,7 @@ export default function Home() {
       </section>
 
       {/* ─── TESTIMONIALS ─── */}
-      <section className="py-16 bg-brand-bg dark:bg-brand-dark-bg">
+      <section className="py-16 bg-white dark:bg-brand-dark-bg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="section-title">What Our Students Say</h2>
@@ -486,19 +417,17 @@ export default function Home() {
                 transition={{ duration: 0.4, delay: i * 0.1 }}
                 className="card p-6"
               >
+                {/* Stars */}
                 <div className="flex items-center gap-1 mb-4">
                   {Array.from({ length: t.rating }).map((_, j) => (
-                    <Star key={j} size={16} className="text-amber-400 fill-amber-400" />
+                    <svg key={j} className="w-4 h-4 text-amber-400 fill-amber-400" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
                   ))}
                 </div>
-                <p className="text-brand-muted dark:text-brand-dark-muted text-sm leading-relaxed mb-6 italic">
+                <p className="text-brand-muted dark:text-brand-dark-muted text-sm leading-relaxed mb-6">
                   "{t.quote}"
                 </p>
                 <div className="flex items-center gap-3">
-                  <div
-                    className="w-10 h-10 rounded-full flex items-center justify-center text-white text-sm font-bold"
-                    style={{ backgroundColor: t.color }}
-                  >
+                  <div className="w-10 h-10 rounded-full bg-[#0A0A0A] dark:bg-white flex items-center justify-center text-white dark:text-black text-sm font-bold">
                     {t.initials}
                   </div>
                   <div>
@@ -512,22 +441,53 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ─── WHAT WE OFFER ─── */}
+      <section className="py-16 bg-gray-50 dark:bg-brand-dark-card border-t border-gray-100 dark:border-brand-dark-border">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="section-title">Everything you need to succeed</h2>
+            <p className="section-subtitle">One platform for all your academic and career needs</p>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+            {[
+              { icon: BookOpen, label: 'Courses', path: '/courses' },
+              { icon: FileText, label: 'Resources', path: '/resources' },
+              { icon: Trophy, label: 'Hackathons', path: '/hackathons' },
+              { icon: GraduationCap, label: 'Counseling', path: '/counseling' },
+              { icon: Briefcase, label: 'Internships', path: '/internships' },
+              { icon: Users2, label: 'Mentorship', path: '/mentorship' },
+            ].map((item, i) => (
+              <Link key={item.label} to={item.path}>
+                <motion.div
+                  initial={{ opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.07 }}
+                  className="bg-white dark:bg-brand-dark-bg rounded-2xl border border-gray-100 dark:border-brand-dark-border p-5 text-center hover:-translate-y-1 transition-transform duration-200 cursor-pointer group"
+                >
+                  <div className="w-10 h-10 rounded-xl bg-gray-100 dark:bg-white/10 flex items-center justify-center mx-auto mb-3 group-hover:bg-primary-50 dark:group-hover:bg-primary-900/20 transition-colors">
+                    <item.icon size={20} className="text-brand-muted dark:text-brand-dark-muted group-hover:text-primary-500 transition-colors" />
+                  </div>
+                  <p className="text-sm font-semibold text-brand-text dark:text-brand-dark-text">{item.label}</p>
+                </motion.div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ─── FINAL CTA ─── */}
-      <section className="py-16 bg-white dark:bg-brand-dark-card">
+      <section className="py-16 bg-white dark:bg-brand-dark-bg">
         <div className="max-w-3xl mx-auto px-4 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <div className="flex items-center justify-center gap-2 mb-4">
-              <Code2 size={24} className="text-primary-500" />
-              <span className="text-primary-500 font-semibold">Join 12,000+ Students</span>
-            </div>
             <h2 className="text-3xl md:text-4xl font-bold text-brand-text dark:text-brand-dark-text mb-4">
               Ready to start your journey?
             </h2>
-            <p className="text-brand-muted dark:text-brand-dark-muted mb-8">
+            <p className="text-brand-muted dark:text-brand-dark-muted mb-8 text-lg">
               Create your free account and access courses, counseling resources, and hackathon updates today.
             </p>
             <Link to="/register">

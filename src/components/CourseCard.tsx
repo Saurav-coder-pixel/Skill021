@@ -8,37 +8,22 @@ interface CourseCardProps {
   index?: number
 }
 
-const levelColors = {
-  Beginner: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
-  Intermediate: 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400',
-  Advanced: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400',
-}
-
-const categoryColors: Record<string, string> = {
-  DSA: 'bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-400',
-  Java: 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400',
-  Python: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400',
-  Django: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
-  DevOps: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400',
-  'Exam Prep': 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400',
-  'System Design': 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-400',
-}
-
 export default function CourseCard({ course, index = 0 }: CourseCardProps) {
   const handleEnroll = () => {
     toast.success(`Enrolled in "${course.title}"! Check your dashboard.`, {
       duration: 3000,
-      icon: '🎉',
     })
   }
 
   const renderStars = (rating: number) => {
     return Array.from({ length: 5 }, (_, i) => (
-      <Star
+      <svg
         key={i}
-        size={12}
-        className={i < Math.floor(rating) ? 'text-amber-400 fill-amber-400' : 'text-gray-300 dark:text-gray-600'}
-      />
+        className={`w-3 h-3 ${i < Math.floor(rating) ? 'text-amber-400 fill-amber-400' : 'text-gray-200 fill-gray-200 dark:text-gray-700 dark:fill-gray-700'}`}
+        viewBox="0 0 20 20"
+      >
+        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+      </svg>
     ))
   }
 
@@ -48,36 +33,40 @@ export default function CourseCard({ course, index = 0 }: CourseCardProps) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.4, delay: index * 0.1 }}
-      className="card group overflow-hidden flex flex-col"
+      className="bg-white dark:bg-brand-dark-card rounded-2xl border border-gray-100 dark:border-brand-dark-border overflow-hidden flex flex-col group hover:shadow-card-hover hover:-translate-y-1 transition-all duration-200"
     >
-      {/* Thumbnail */}
-      <div
-        className="h-44 flex items-center justify-center relative overflow-hidden"
-        style={{ background: `linear-gradient(135deg, ${course.gradientFrom} 0%, ${course.gradientTo} 100%)` }}
-      >
-        <BookOpen size={52} className="text-white/30" />
-        <div className="absolute inset-0 bg-black/10 group-hover:bg-black/5 transition-colors duration-300" />
+      {/* Thumbnail — clean dark */}
+      <div className="h-44 flex items-center justify-center relative overflow-hidden bg-gray-900 dark:bg-black">
+        <BookOpen size={52} className="text-white/10" />
+        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
         {course.price === 'FREE' && (
-          <div className="absolute top-3 right-3 bg-green-500 text-white text-xs font-bold px-2.5 py-1 rounded-full">
+          <div className="absolute top-3 right-3 bg-primary-500 text-white text-xs font-bold px-2.5 py-1 rounded-lg">
             FREE
           </div>
         )}
         <div className="absolute bottom-3 left-3">
-          <span className={`badge text-xs ${categoryColors[course.category] || 'bg-gray-100 text-gray-700'}`}>
+          <span className="text-[11px] font-semibold px-2.5 py-1 rounded-lg bg-white/10 text-white">
             {course.category}
           </span>
+        </div>
+        {/* Play overlay */}
+        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+          <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center border border-white/40">
+            <Play size={18} className="text-white ml-0.5" />
+          </div>
         </div>
       </div>
 
       {/* Content */}
       <div className="p-5 flex flex-col flex-1">
+        {/* Level badge — monochrome */}
         <div className="flex items-center gap-2 mb-2">
-          <span className={`badge text-xs ${levelColors[course.level]}`}>
+          <span className="text-[11px] font-semibold px-2 py-0.5 rounded-md bg-gray-100 dark:bg-white/10 text-brand-muted dark:text-brand-dark-muted">
             {course.level}
           </span>
         </div>
 
-        <h3 className="text-base font-bold text-brand-text dark:text-brand-dark-text mb-1 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors line-clamp-2">
+        <h3 className="text-base font-bold text-brand-text dark:text-brand-dark-text mb-1 group-hover:text-primary-500 transition-colors line-clamp-2">
           {course.title}
         </h3>
 
@@ -109,28 +98,30 @@ export default function CourseCard({ course, index = 0 }: CourseCardProps) {
           <span className="text-xs text-brand-muted dark:text-brand-dark-muted">({course.reviews.toLocaleString()})</span>
         </div>
 
-        <div className="flex items-center justify-between mt-auto">
+        <div className="flex items-center justify-between mt-auto pt-4 border-t border-gray-100 dark:border-brand-dark-border">
           <div className="text-xl font-bold text-brand-text dark:text-brand-dark-text">
             {course.price === 'FREE' ? (
-              <span className="text-green-600 dark:text-green-400">FREE</span>
+              <span className="text-primary-500">FREE</span>
             ) : (
               <span>₹{course.price}</span>
             )}
           </div>
           <div className="flex items-center gap-2">
-            <a
-              href={course.youtubeUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-8 h-8 rounded-lg bg-red-50 dark:bg-red-900/20 flex items-center justify-center hover:bg-red-100 dark:hover:bg-red-900/40 transition-colors"
-              title="Watch on YouTube"
-            >
-              <Play size={16} className="text-red-500" />
-            </a>
+            {course.youtubeUrl && (
+              <a
+                href={course.youtubeUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-8 h-8 rounded-lg bg-gray-100 dark:bg-white/10 flex items-center justify-center hover:bg-gray-200 dark:hover:bg-white/20 transition-colors"
+                title="Watch on YouTube"
+              >
+                <Play size={14} className="text-brand-muted dark:text-brand-dark-muted" />
+              </a>
+            )}
             <motion.button
               whileTap={{ scale: 0.97 }}
               onClick={handleEnroll}
-              className="px-4 py-2 bg-primary-500 text-white text-sm font-semibold rounded-xl hover:bg-primary-600 transition-all duration-200"
+              className="px-4 py-2 bg-[#0A0A0A] dark:bg-white text-white dark:text-black text-sm font-semibold rounded-xl hover:bg-gray-800 dark:hover:bg-gray-100 transition-all duration-200"
             >
               Enroll Now
             </motion.button>

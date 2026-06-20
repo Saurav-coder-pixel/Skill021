@@ -2,10 +2,10 @@ import React, { useState, useEffect, useRef } from 'react'
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import {
-  Zap, Menu, X, Sun, Moon, ChevronDown, User, LayoutDashboard, LogOut, Shield,
+  Menu, X, Sun, Moon, ChevronDown, User, LayoutDashboard, LogOut, Shield,
   BookOpen, FileText, Trophy, Briefcase, Users, Star, GraduationCap,
   Code2, Globe, Award, Target, Map, HelpCircle,
-  FileQuestion, MessageSquare, ArrowRight, Sparkles
+  FileQuestion, MessageSquare, ArrowRight, Home
 } from 'lucide-react'
 import { useAuthStore } from '../store/authStore'
 
@@ -19,6 +19,12 @@ const dropdownVariants = {
 // ─── Mega Menu Data ───────────────────────────────────────────────────────────
 const NAV_ITEMS = [
   {
+    id: 'home',
+    label: 'Home',
+    path: '/',
+    icon: Home,
+  },
+  {
     id: 'courses',
     label: 'Courses',
     path: '/courses',
@@ -28,8 +34,6 @@ const NAV_ITEMS = [
       columns: [
         {
           title: 'Foundation Programs',
-          color: 'text-blue-500',
-          bg: 'bg-blue-500',
           icon: BookOpen,
           items: [
             { name: 'Class 1–5', path: '/courses?group=Foundation+Programs&sub=Class+1-5' },
@@ -40,8 +44,6 @@ const NAV_ITEMS = [
         },
         {
           title: 'Competitive Exams',
-          color: 'text-orange-500',
-          bg: 'bg-orange-500',
           icon: Target,
           items: [
             { name: 'JEE Preparation', path: '/courses?group=Competitive+Exams&sub=JEE+Preparation' },
@@ -53,14 +55,11 @@ const NAV_ITEMS = [
         },
         {
           title: 'College & Tech',
-          color: 'text-purple-500',
-          bg: 'bg-purple-500',
           icon: Code2,
           items: [
             { name: 'DSA', path: '/courses?group=College+%26+Tech+Courses&sub=DSA' },
             { name: 'Web Development', path: '/courses?group=College+%26+Tech+Courses&sub=Web+Development' },
             { name: 'App Development', path: '/courses?group=College+%26+Tech+Courses&sub=App+Development' },
-            { name: 'Flutter Development', path: '/courses?group=College+%26+Tech+Courses&sub=Flutter+Development' },
             { name: 'AI & Machine Learning', path: '/courses?group=College+%26+Tech+Courses&sub=AI+%26+Machine+Learning' },
             { name: 'Data Science', path: '/courses?group=College+%26+Tech+Courses&sub=Data+Science' },
             { name: 'Cyber Security', path: '/courses?group=College+%26+Tech+Courses&sub=Cyber+Security' },
@@ -70,7 +69,6 @@ const NAV_ITEMS = [
         },
       ],
       cta: { label: 'Browse All Courses', path: '/courses' },
-      highlight: { icon: Sparkles, label: 'New: AI & ML Batch Starting June 25', path: '/courses?group=College+%26+Tech+Courses&sub=AI+%26+Machine+Learning' },
     },
   },
   {
@@ -81,14 +79,14 @@ const NAV_ITEMS = [
     description: 'Notes, PYQs, roadmaps, quizzes & more',
     mega: {
       grid: [
-        { name: 'Notes & PDFs', path: '/resources?type=Notes', icon: FileText, color: 'text-blue-500', bg: 'bg-blue-50 dark:bg-blue-900/20', desc: 'Subject-wise handwritten & typed notes' },
-        { name: 'Roadmaps', path: '/roadmaps', icon: Map, color: 'text-green-500', bg: 'bg-green-50 dark:bg-green-900/20', desc: 'Visual career & learning roadmaps' },
-        { name: 'Previous Year Papers', path: '/resources?type=Previous+Year+Papers', icon: FileQuestion, color: 'text-orange-500', bg: 'bg-orange-50 dark:bg-orange-900/20', desc: 'PYQs with solutions for all exams' },
-        { name: 'Quizzes & Tests', path: '/quizzes', icon: HelpCircle, color: 'text-purple-500', bg: 'bg-purple-50 dark:bg-purple-900/20', desc: 'Topic-wise MCQ practice tests' },
-        { name: 'E-Books', path: '/resources?type=E-Books', icon: BookOpen, color: 'text-red-500', bg: 'bg-red-50 dark:bg-red-900/20', desc: 'Digital books & reference material' },
-        { name: 'Cheat Sheets', path: '/resources?type=Cheat+Sheets', icon: FileText, color: 'text-yellow-500', bg: 'bg-yellow-50 dark:bg-yellow-900/20', desc: 'Quick revision cards & formulas' },
-        { name: 'Interview Questions', path: '/resources?type=Interview+Questions', icon: Users, color: 'text-indigo-500', bg: 'bg-indigo-50 dark:bg-indigo-900/20', desc: 'Company-wise interview preparation' },
-        { name: 'Coding Resources', path: '/resources?type=Coding+Resources', icon: Code2, color: 'text-teal-500', bg: 'bg-teal-50 dark:bg-teal-900/20', desc: 'DSA sheets, patterns & templates' },
+        { name: 'Notes & PDFs', path: '/resources?type=Notes', icon: FileText, desc: 'Subject-wise handwritten & typed notes' },
+        { name: 'Roadmaps', path: '/roadmaps', icon: Map, desc: 'Visual career & learning roadmaps' },
+        { name: 'Previous Year Papers', path: '/resources?type=Previous+Year+Papers', icon: FileQuestion, desc: 'PYQs with solutions for all exams' },
+        { name: 'Quizzes & Tests', path: '/quizzes', icon: HelpCircle, desc: 'Topic-wise MCQ practice tests' },
+        { name: 'E-Books', path: '/resources?type=E-Books', icon: BookOpen, desc: 'Digital books & reference material' },
+        { name: 'Cheat Sheets', path: '/resources?type=Cheat+Sheets', icon: FileText, desc: 'Quick revision cards & formulas' },
+        { name: 'Interview Questions', path: '/resources?type=Interview+Questions', icon: Users, desc: 'Company-wise interview preparation' },
+        { name: 'Coding Resources', path: '/resources?type=Coding+Resources', icon: Code2, desc: 'DSA sheets, patterns & templates' },
       ],
       cta: { label: 'Explore All Resources', path: '/resources' },
     },
@@ -103,8 +101,6 @@ const NAV_ITEMS = [
       columns: [
         {
           title: 'Engineering Admissions',
-          color: 'text-blue-500',
-          bg: 'bg-blue-500',
           icon: GraduationCap,
           items: [
             { name: 'JoSAA Counseling', path: '/counseling?cat=Engineering' },
@@ -113,18 +109,14 @@ const NAV_ITEMS = [
             { name: 'IPU Counseling', path: '/counseling?cat=Engineering' },
             { name: 'JAC Delhi', path: '/counseling?cat=Engineering' },
             { name: 'LPU / VIT / SRM', path: '/counseling?cat=Engineering' },
-            { name: 'BITS Pilani', path: '/counseling?cat=Engineering' },
           ],
         },
         {
           title: 'Medical & Career',
-          color: 'text-green-500',
-          bg: 'bg-green-500',
           icon: Award,
           items: [
             { name: 'NEET UG Counseling', path: '/counseling?cat=Medical' },
             { name: 'AIQ Counseling', path: '/counseling?cat=Medical' },
-            { name: 'State Quota', path: '/counseling?cat=Medical' },
             { name: 'Career Guidance', path: '/counseling?cat=Career' },
             { name: 'Stream Selection', path: '/counseling?cat=Career' },
             { name: 'Skill Assessment', path: '/counseling?cat=Career' },
@@ -132,8 +124,6 @@ const NAV_ITEMS = [
         },
         {
           title: 'Study Abroad',
-          color: 'text-purple-500',
-          bg: 'bg-purple-500',
           icon: Globe,
           items: [
             { name: 'USA Admissions', path: '/counseling?cat=Abroad+Study' },
@@ -151,14 +141,13 @@ const NAV_ITEMS = [
     label: 'Hackathons',
     path: '/hackathons',
     icon: Trophy,
-    description: 'Compete, build & win across categories',
+    description: 'Compete, build & win',
     simple: [
-      { name: 'School Level', path: '/hackathons?cat=School+Level', icon: BookOpen, color: 'text-blue-500' },
-      { name: 'College Level', path: '/hackathons?cat=College+Level', icon: GraduationCap, color: 'text-purple-500' },
-      { name: 'National Hackathons', path: '/hackathons?cat=National', icon: Award, color: 'text-orange-500' },
-      { name: 'International', path: '/hackathons?cat=International', icon: Globe, color: 'text-red-500' },
-      { name: 'Startup Competitions', path: '/hackathons?cat=Startup+Competition', icon: Sparkles, color: 'text-teal-500' },
-      { name: 'Innovation Challenges', path: '/hackathons?cat=Innovation+Challenge', icon: Trophy, color: 'text-amber-500' },
+      { name: 'School Level', path: '/hackathons?cat=School+Level', icon: BookOpen },
+      { name: 'College Level', path: '/hackathons?cat=College+Level', icon: GraduationCap },
+      { name: 'National Hackathons', path: '/hackathons?cat=National', icon: Award },
+      { name: 'International', path: '/hackathons?cat=International', icon: Globe },
+      { name: 'Startup Competitions', path: '/hackathons?cat=Startup+Competition', icon: Trophy },
     ],
     cta: { label: 'View All Hackathons', path: '/hackathons' },
   },
@@ -169,11 +158,11 @@ const NAV_ITEMS = [
     icon: Briefcase,
     description: 'Real-world experience & skill training',
     simple: [
-      { name: 'Summer Internships', path: '/internships?cat=Summer+Internship', icon: Briefcase, color: 'text-orange-500' },
-      { name: 'Virtual Internships', path: '/internships?cat=Virtual+Internship', icon: Globe, color: 'text-purple-500' },
-      { name: 'Live Projects', path: '/internships?cat=Live+Project', icon: Code2, color: 'text-green-500' },
-      { name: 'Industrial Training', path: '/internships?cat=Industrial+Training', icon: Award, color: 'text-teal-500' },
-      { name: 'Placement Training', path: '/internships?cat=Placement+Training', icon: Target, color: 'text-red-500' },
+      { name: 'Summer Internships', path: '/internships?cat=Summer+Internship', icon: Briefcase },
+      { name: 'Virtual Internships', path: '/internships?cat=Virtual+Internship', icon: Globe },
+      { name: 'Live Projects', path: '/internships?cat=Live+Project', icon: Code2 },
+      { name: 'Industrial Training', path: '/internships?cat=Industrial+Training', icon: Award },
+      { name: 'Placement Training', path: '/internships?cat=Placement+Training', icon: Target },
     ],
     cta: { label: 'All Opportunities', path: '/internships' },
   },
@@ -184,11 +173,10 @@ const NAV_ITEMS = [
     icon: Users,
     description: '1:1 sessions with industry experts',
     simple: [
-      { name: '1:1 Mentorship', path: '/mentorship', icon: Users, color: 'text-primary-500' },
-      { name: 'Resume Review', path: '/mentorship', icon: FileText, color: 'text-blue-500' },
-      { name: 'Mock Interviews', path: '/mentorship', icon: MessageSquare, color: 'text-purple-500' },
-      { name: 'Career Guidance', path: '/mentorship', icon: Briefcase, color: 'text-teal-500' },
-      { name: 'LinkedIn Review', path: '/mentorship', icon: Users, color: 'text-indigo-500' },
+      { name: '1:1 Mentorship', path: '/mentorship', icon: Users },
+      { name: 'Resume Review', path: '/mentorship', icon: FileText },
+      { name: 'Mock Interviews', path: '/mentorship', icon: MessageSquare },
+      { name: 'Career Guidance', path: '/mentorship', icon: Briefcase },
     ],
     cta: { label: 'Book a Session', path: '/mentorship' },
   },
@@ -199,27 +187,27 @@ const NAV_ITEMS = [
 
 function MegaMenuColumns({ item, onClose }: { item: typeof NAV_ITEMS[0]; onClose: () => void }) {
   if (!item.mega) return null
-  const { columns, cta, highlight } = item.mega as any
+  const { columns, cta } = item.mega as any
   return (
     <motion.div
       variants={dropdownVariants} initial="hidden" animate="visible" exit="exit"
-      className="absolute left-1/2 -translate-x-1/2 top-full mt-1 w-[720px] bg-white dark:bg-[#13132B] rounded-2xl shadow-2xl border border-gray-100 dark:border-white/10 z-50 overflow-hidden"
+      className="absolute left-1/2 -translate-x-1/2 top-full mt-1 w-[680px] bg-white dark:bg-brand-dark-card rounded-2xl shadow-xl border border-gray-100 dark:border-brand-dark-border z-50 overflow-hidden"
     >
       {/* Top accent bar */}
-      <div className="h-0.5 bg-gradient-to-r from-primary-500 via-teal-500 to-primary-500" />
+      <div className="h-[2px] bg-primary-500" />
 
       {/* Page link banner */}
-      <div className="flex items-center justify-between px-5 pt-4 pb-3 border-b border-gray-100 dark:border-white/5">
+      <div className="flex items-center justify-between px-5 pt-4 pb-3 border-b border-gray-100 dark:border-brand-dark-border">
         <div>
           <p className="text-[11px] font-bold uppercase tracking-widest text-brand-muted dark:text-brand-dark-muted">Explore</p>
-          <h3 className="text-sm font-bold text-brand-text dark:text-brand-dark-text">{item.description}</h3>
+          <h3 className="text-sm font-semibold text-brand-text dark:text-brand-dark-text">{item.description}</h3>
         </div>
         <Link
           to={item.path}
           onClick={onClose}
-          className="flex items-center gap-1.5 px-4 py-2 bg-primary-500 text-white rounded-xl text-xs font-semibold hover:bg-primary-600 transition-colors whitespace-nowrap"
+          className="flex items-center gap-1.5 px-4 py-2 bg-[#0A0A0A] text-white rounded-xl text-xs font-semibold hover:bg-gray-800 transition-colors whitespace-nowrap"
         >
-          <ArrowRight size={13} /> Open {item.label} Page
+          Open {item.label} Page <ArrowRight size={12} />
         </Link>
       </div>
 
@@ -227,8 +215,8 @@ function MegaMenuColumns({ item, onClose }: { item: typeof NAV_ITEMS[0]; onClose
       <div className="grid grid-cols-3 gap-0 p-5">
         {columns.map((col: any) => (
           <div key={col.title} className="pr-4 last:pr-0">
-            <div className={`flex items-center gap-2 text-xs font-bold uppercase tracking-wider mb-3 ${col.color}`}>
-              <col.icon size={12} /> {col.title}
+            <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider mb-3 text-brand-muted dark:text-brand-dark-muted">
+              <col.icon size={11} /> {col.title}
             </div>
             <div className="space-y-0.5">
               {col.items.map((link: any) => (
@@ -248,23 +236,15 @@ function MegaMenuColumns({ item, onClose }: { item: typeof NAV_ITEMS[0]; onClose
       </div>
 
       {/* Footer */}
-      {(cta || highlight) && (
-        <div className="px-5 pb-4 flex items-center justify-between gap-4">
-          {highlight && (
-            <div className="flex items-center gap-2 text-xs text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/20 px-3 py-2 rounded-xl flex-1">
-              <highlight.icon size={12} />
-              <Link to={highlight.path} onClick={onClose} className="hover:underline font-medium">{highlight.label}</Link>
-            </div>
-          )}
-          {cta && (
-            <Link
-              to={cta.path}
-              onClick={onClose}
-              className="flex items-center gap-1.5 text-sm font-semibold text-primary-500 hover:text-primary-600 whitespace-nowrap ml-auto"
-            >
-              {cta.label} <ArrowRight size={13} />
-            </Link>
-          )}
+      {cta && (
+        <div className="px-5 pb-4 border-t border-gray-100 dark:border-brand-dark-border pt-3">
+          <Link
+            to={cta.path}
+            onClick={onClose}
+            className="flex items-center gap-1.5 text-sm font-semibold text-primary-500 hover:text-primary-600"
+          >
+            {cta.label} <ArrowRight size={13} />
+          </Link>
         </div>
       )}
     </motion.div>
@@ -277,33 +257,33 @@ function MegaMenuGrid({ item, onClose }: { item: typeof NAV_ITEMS[0]; onClose: (
   return (
     <motion.div
       variants={dropdownVariants} initial="hidden" animate="visible" exit="exit"
-      className="absolute left-1/2 -translate-x-1/2 top-full mt-1 w-[640px] bg-white dark:bg-[#13132B] rounded-2xl shadow-2xl border border-gray-100 dark:border-white/10 z-50 overflow-hidden"
+      className="absolute left-1/2 -translate-x-1/2 top-full mt-1 w-[600px] bg-white dark:bg-brand-dark-card rounded-2xl shadow-xl border border-gray-100 dark:border-brand-dark-border z-50 overflow-hidden"
     >
-      <div className="h-0.5 bg-gradient-to-r from-teal-500 via-primary-500 to-teal-500" />
+      <div className="h-[2px] bg-primary-500" />
 
-      <div className="flex items-center justify-between px-5 pt-4 pb-3 border-b border-gray-100 dark:border-white/5">
+      <div className="flex items-center justify-between px-5 pt-4 pb-3 border-b border-gray-100 dark:border-brand-dark-border">
         <div>
           <p className="text-[11px] font-bold uppercase tracking-widest text-brand-muted dark:text-brand-dark-muted">Library</p>
-          <h3 className="text-sm font-bold text-brand-text dark:text-brand-dark-text">{item.description}</h3>
+          <h3 className="text-sm font-semibold text-brand-text dark:text-brand-dark-text">{item.description}</h3>
         </div>
         <Link
           to={item.path}
           onClick={onClose}
-          className="flex items-center gap-1.5 px-4 py-2 bg-teal-500 text-white rounded-xl text-xs font-semibold hover:bg-teal-600 transition-colors whitespace-nowrap"
+          className="flex items-center gap-1.5 px-4 py-2 bg-[#0A0A0A] text-white rounded-xl text-xs font-semibold hover:bg-gray-800 transition-colors whitespace-nowrap"
         >
-          <ArrowRight size={13} /> Open Resources Page
+          Open Resources <ArrowRight size={12} />
         </Link>
       </div>
 
-      <div className="grid grid-cols-2 gap-2 p-4">
+      <div className="grid grid-cols-2 gap-1.5 p-4">
         {grid.map((link: any) => (
           <Link
             key={link.name}
             to={link.path}
             onClick={onClose}
-            className={`flex items-start gap-3 p-3 rounded-xl ${link.bg} hover:scale-[1.02] transition-all group`}
+            className="flex items-start gap-3 p-3 rounded-xl hover:bg-gray-50 dark:hover:bg-white/5 transition-all group border border-transparent hover:border-gray-100 dark:hover:border-brand-dark-border"
           >
-            <div className={`w-8 h-8 rounded-lg bg-white dark:bg-brand-dark-bg shadow-sm flex items-center justify-center flex-shrink-0 ${link.color}`}>
+            <div className="w-8 h-8 rounded-lg bg-gray-100 dark:bg-white/10 flex items-center justify-center flex-shrink-0 text-brand-muted dark:text-brand-dark-muted">
               <link.icon size={15} />
             </div>
             <div>
@@ -315,11 +295,11 @@ function MegaMenuGrid({ item, onClose }: { item: typeof NAV_ITEMS[0]; onClose: (
       </div>
 
       {cta && (
-        <div className="px-5 pb-4 border-t border-gray-100 dark:border-white/5 pt-3">
+        <div className="px-5 pb-4 border-t border-gray-100 dark:border-brand-dark-border pt-3">
           <Link
             to={cta.path}
             onClick={onClose}
-            className="flex items-center gap-1.5 text-sm font-semibold text-teal-500 hover:text-teal-600"
+            className="flex items-center gap-1.5 text-sm font-semibold text-primary-500 hover:text-primary-600"
           >
             {cta.label} <ArrowRight size={13} />
           </Link>
@@ -336,11 +316,11 @@ function SimpleDropdown({ item, onClose }: { item: typeof NAV_ITEMS[0]; onClose:
   return (
     <motion.div
       variants={dropdownVariants} initial="hidden" animate="visible" exit="exit"
-      className="absolute left-0 top-full mt-1 w-64 bg-white dark:bg-[#13132B] rounded-2xl shadow-2xl border border-gray-100 dark:border-white/10 z-50 overflow-hidden"
+      className="absolute left-0 top-full mt-1 w-56 bg-white dark:bg-brand-dark-card rounded-2xl shadow-xl border border-gray-100 dark:border-brand-dark-border z-50 overflow-hidden"
     >
-      <div className="h-0.5 bg-gradient-to-r from-primary-500 to-teal-500" />
+      <div className="h-[2px] bg-primary-500" />
 
-      <div className="flex items-center justify-between px-4 pt-3 pb-2 border-b border-gray-100 dark:border-white/5">
+      <div className="flex items-center justify-between px-4 pt-3 pb-2 border-b border-gray-100 dark:border-brand-dark-border">
         <p className="text-xs font-bold text-brand-text dark:text-brand-dark-text">{item.label}</p>
         <Link
           to={item.path}
@@ -359,7 +339,7 @@ function SimpleDropdown({ item, onClose }: { item: typeof NAV_ITEMS[0]; onClose:
             onClick={onClose}
             className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl hover:bg-gray-50 dark:hover:bg-white/5 transition-colors group"
           >
-            <div className={`w-7 h-7 rounded-lg bg-gray-100 dark:bg-white/10 flex items-center justify-center ${link.color}`}>
+            <div className="w-7 h-7 rounded-lg bg-gray-100 dark:bg-white/10 flex items-center justify-center text-brand-muted dark:text-brand-dark-muted">
               <link.icon size={13} />
             </div>
             <span className="text-sm text-brand-muted dark:text-brand-dark-muted group-hover:text-brand-text dark:group-hover:text-brand-dark-text transition-colors">{link.name}</span>
@@ -369,11 +349,11 @@ function SimpleDropdown({ item, onClose }: { item: typeof NAV_ITEMS[0]; onClose:
       </div>
 
       {cta && (
-        <div className="px-3 py-3 border-t border-gray-100 dark:border-white/5">
+        <div className="px-3 py-3 border-t border-gray-100 dark:border-brand-dark-border">
           <Link
             to={cta.path}
             onClick={onClose}
-            className="w-full block text-center py-2 bg-primary-500 text-white rounded-xl text-xs font-semibold hover:bg-primary-600 transition-colors"
+            className="w-full block text-center py-2 bg-[#0A0A0A] text-white rounded-xl text-xs font-semibold hover:bg-gray-800 transition-colors"
           >
             {cta.label}
           </Link>
@@ -439,33 +419,31 @@ export default function Navbar() {
   const hasDropdown = (item: typeof NAV_ITEMS[0]) => !!(item as any).mega || !!(item as any).simple
 
   const isActive = (path: string) =>
-    location.pathname === path || (path !== '/' && location.pathname.startsWith(path))
+    path === '/'
+      ? location.pathname === '/'
+      : location.pathname === path || location.pathname.startsWith(path)
 
-  // Main items to show in desktop nav (first 6 + more)
-  const primaryItems = NAV_ITEMS.slice(0, 6)
-  const secondaryItems = NAV_ITEMS.slice(6)
+  // Show all items in desktop nav
+  const primaryItems = NAV_ITEMS.slice(0, 7)
+  const secondaryItems = NAV_ITEMS.slice(7)
 
   return (
     <nav
       ref={navRef}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? 'bg-white/96 dark:bg-[#0F0F1A]/96 backdrop-blur-md shadow-sm border-b border-gray-200 dark:border-white/10'
-          : 'bg-white dark:bg-[#0F0F1A] border-b border-gray-200 dark:border-white/10'
+          ? 'bg-white/95 dark:bg-brand-dark-bg/95 backdrop-blur-md shadow-sm border-b border-gray-200 dark:border-brand-dark-border'
+          : 'bg-white dark:bg-brand-dark-bg border-b border-gray-200 dark:border-brand-dark-border'
       }`}
     >
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
 
-          {/* ── Logo ── */}
-          <Link to="/" className="flex items-center gap-2.5 flex-shrink-0 group">
-            <motion.div
-              whileHover={{ rotate: 15 }}
-              className="w-8 h-8 bg-gradient-to-br from-primary-500 to-teal-500 rounded-lg flex items-center justify-center shadow-md"
-            >
-              <Zap size={17} className="text-white" />
-            </motion.div>
-            <span className="text-xl font-bold text-primary-500 tracking-tight">Skill021</span>
+          {/* ── Logo: text only, no icon ── */}
+          <Link to="/" className="flex-shrink-0">
+            <span className="text-xl font-black text-[#0A0A0A] dark:text-white tracking-tight hover:opacity-80 transition-opacity">
+              SKILL021
+            </span>
           </Link>
 
           {/* ── Desktop Navigation ── */}
@@ -480,17 +458,17 @@ export default function Navbar() {
                 {/* The nav item itself — ALWAYS navigates on click */}
                 <Link
                   to={item.path}
-                  className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-[13.5px] font-medium transition-all duration-150 ${
+                  className={`flex items-center gap-1 px-3 py-2 rounded-lg text-[13px] font-medium transition-all duration-150 ${
                     isActive(item.path)
-                      ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20'
-                      : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/8'
+                      ? 'text-[#0A0A0A] dark:text-white bg-gray-100 dark:bg-white/10'
+                      : 'text-gray-500 dark:text-gray-400 hover:text-[#0A0A0A] dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/8'
                   }`}
                 >
                   {item.label}
                   {hasDropdown(item) && (
                     <ChevronDown
                       size={12}
-                      className={`transition-transform duration-150 opacity-60 ${activeDropdown === item.id ? 'rotate-180' : ''}`}
+                      className={`transition-transform duration-150 opacity-50 ${activeDropdown === item.id ? 'rotate-180' : ''}`}
                     />
                   )}
                 </Link>
@@ -499,7 +477,7 @@ export default function Navbar() {
                 {isActive(item.path) && (
                   <motion.div
                     layoutId="nav-active-bar"
-                    className="absolute bottom-0 left-3 right-3 h-0.5 bg-primary-500 rounded-full"
+                    className="absolute bottom-0 left-3 right-3 h-[2px] bg-primary-500 rounded-full"
                   />
                 )}
 
@@ -525,15 +503,15 @@ export default function Navbar() {
               </div>
             ))}
 
-            {/* Secondary items (no dropdown) */}
+            {/* Secondary items */}
             {secondaryItems.map(item => (
               <Link
                 key={item.id}
                 to={item.path}
-                className={`px-3 py-2 rounded-lg text-[13.5px] font-medium transition-all duration-150 ${
+                className={`px-3 py-2 rounded-lg text-[13px] font-medium transition-all duration-150 ${
                   isActive(item.path)
-                    ? 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20'
-                    : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/8'
+                    ? 'text-[#0A0A0A] dark:text-white bg-gray-100 dark:bg-white/10'
+                    : 'text-gray-500 dark:text-gray-400 hover:text-[#0A0A0A] dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/8'
                 }`}
               >
                 {item.label}
@@ -544,14 +522,13 @@ export default function Navbar() {
           {/* ── Right Side Controls ── */}
           <div className="hidden xl:flex items-center gap-2">
             {/* Dark Mode */}
-            <motion.button
-              whileTap={{ scale: 0.9 }}
+            <button
               onClick={() => setDarkMode(!darkMode)}
               className="w-9 h-9 rounded-lg flex items-center justify-center text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/10 transition-colors"
               title={darkMode ? 'Light mode' : 'Dark mode'}
             >
-              {darkMode ? <Sun size={17} /> : <Moon size={17} />}
-            </motion.button>
+              {darkMode ? <Sun size={16} /> : <Moon size={16} />}
+            </button>
 
             {isAuthenticated && user ? (
               <div className="relative" ref={userMenuRef}>
@@ -559,7 +536,7 @@ export default function Navbar() {
                   onClick={() => setUserMenuOpen(!userMenuOpen)}
                   className="flex items-center gap-2 px-3 py-1.5 rounded-xl hover:bg-gray-50 dark:hover:bg-white/5 transition-colors"
                 >
-                  <div className="w-7 h-7 rounded-full bg-gradient-to-br from-primary-500 to-teal-500 flex items-center justify-center text-white text-xs font-bold">
+                  <div className="w-7 h-7 rounded-full bg-[#0A0A0A] dark:bg-white flex items-center justify-center text-white dark:text-black text-xs font-bold">
                     {getInitials(user.name)}
                   </div>
                   <span className="text-[13px] font-medium text-gray-700 dark:text-gray-200 max-w-[72px] truncate">
@@ -574,9 +551,9 @@ export default function Navbar() {
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: -8, scale: 0.96 }}
                       transition={{ duration: 0.14 }}
-                      className="absolute right-0 top-12 w-52 bg-white dark:bg-[#1A1A2E] rounded-xl shadow-xl border border-gray-100 dark:border-white/10 py-2 z-50"
+                      className="absolute right-0 top-12 w-52 bg-white dark:bg-brand-dark-card rounded-xl shadow-xl border border-gray-100 dark:border-brand-dark-border py-2 z-50"
                     >
-                      <div className="px-4 py-2.5 border-b border-gray-100 dark:border-white/10 mb-1">
+                      <div className="px-4 py-2.5 border-b border-gray-100 dark:border-brand-dark-border mb-1">
                         <p className="text-sm font-semibold text-gray-900 dark:text-white truncate">{user.name}</p>
                         <p className="text-xs text-gray-500 truncate">{user.email}</p>
                       </div>
@@ -585,10 +562,10 @@ export default function Navbar() {
                       </Link>
                       {user.role === 'admin' && (
                         <Link to="/admin" className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
-                          <Shield size={15} className="text-teal-500" /> Admin Panel
+                          <Shield size={15} className="text-gray-400" /> Admin Panel
                         </Link>
                       )}
-                      <hr className="my-1 border-gray-100 dark:border-white/10" />
+                      <hr className="my-1 border-gray-100 dark:border-brand-dark-border" />
                       <button onClick={handleLogout} className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
                         <LogOut size={15} /> Logout
                       </button>
@@ -600,17 +577,14 @@ export default function Navbar() {
               <div className="flex items-center gap-2">
                 <Link
                   to="/login"
-                  className="px-3.5 py-1.5 text-[13px] font-semibold text-primary-600 dark:text-primary-400 border border-primary-500/40 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-all"
+                  className="px-3.5 py-1.5 text-[13px] font-semibold text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-brand-dark-border rounded-lg hover:bg-gray-50 dark:hover:bg-white/5 transition-all"
                 >
                   Log in
                 </Link>
                 <Link to="/register">
-                  <motion.button
-                    whileTap={{ scale: 0.97 }}
-                    className="px-4 py-1.5 text-[13px] font-semibold text-white bg-gradient-to-r from-primary-500 to-teal-500 rounded-lg hover:opacity-90 transition-all shadow-sm shadow-primary-500/25"
-                  >
+                  <button className="px-4 py-1.5 text-[13px] font-semibold text-white bg-[#0A0A0A] dark:bg-white dark:text-black rounded-lg hover:bg-gray-800 dark:hover:bg-gray-100 transition-all">
                     Sign Up Free
-                  </motion.button>
+                  </button>
                 </Link>
               </div>
             )}
@@ -618,13 +592,12 @@ export default function Navbar() {
 
           {/* ── Mobile Controls ── */}
           <div className="xl:hidden flex items-center gap-2">
-            <motion.button
-              whileTap={{ scale: 0.9 }}
+            <button
               onClick={() => setDarkMode(!darkMode)}
               className="w-9 h-9 rounded-lg flex items-center justify-center text-gray-500 dark:text-gray-400"
             >
               {darkMode ? <Sun size={18} /> : <Moon size={18} />}
-            </motion.button>
+            </button>
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
               className="w-9 h-9 rounded-lg flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/10"
@@ -642,7 +615,7 @@ export default function Navbar() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="xl:hidden bg-white dark:bg-[#0F0F1A] border-t border-gray-200 dark:border-white/10 overflow-hidden max-h-[80vh] overflow-y-auto"
+            className="xl:hidden bg-white dark:bg-brand-dark-bg border-t border-gray-200 dark:border-brand-dark-border overflow-hidden max-h-[80vh] overflow-y-auto"
           >
             <div className="px-4 py-3 space-y-0.5">
               {NAV_ITEMS.map(item => {
@@ -657,19 +630,19 @@ export default function Navbar() {
                         to={item.path}
                         className={`flex-1 flex items-center gap-2.5 px-3 py-2.5 rounded-l-xl text-sm font-semibold transition-colors ${
                           isActive(item.path)
-                            ? 'bg-primary-50 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400'
-                            : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/5'
+                            ? 'bg-gray-100 dark:bg-white/10 text-[#0A0A0A] dark:text-white'
+                            : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/5'
                         }`}
                       >
                         <item.icon size={15} className={isActive(item.path) ? 'text-primary-500' : 'text-gray-400'} />
                         {item.label}
                       </Link>
-                      {/* Expand toggle (separate) */}
+                      {/* Expand toggle */}
                       {hasExpand && (
                         <button
                           onClick={() => setMobileExpanded(mobileExpanded === item.id ? null : item.id)}
-                          className={`px-3 py-2.5 rounded-r-xl transition-colors border-l border-gray-100 dark:border-white/10 ${
-                            isActive(item.path) ? 'bg-primary-50 dark:bg-primary-900/20' : 'hover:bg-gray-50 dark:hover:bg-white/5'
+                          className={`px-3 py-2.5 rounded-r-xl transition-colors border-l border-gray-100 dark:border-brand-dark-border ${
+                            isActive(item.path) ? 'bg-gray-100 dark:bg-white/10' : 'hover:bg-gray-50 dark:hover:bg-white/5'
                           }`}
                         >
                           <ChevronDown size={14} className={`text-gray-400 transition-transform ${mobileExpanded === item.id ? 'rotate-180' : ''}`} />
@@ -710,11 +683,11 @@ export default function Navbar() {
               })}
 
               {/* Auth */}
-              <div className="pt-3 mt-2 border-t border-gray-100 dark:border-white/10 space-y-2">
+              <div className="pt-3 mt-2 border-t border-gray-100 dark:border-brand-dark-border space-y-2">
                 {isAuthenticated && user ? (
                   <>
-                    <div className="px-3 py-2.5 bg-primary-50 dark:bg-primary-900/20 rounded-xl flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary-500 to-teal-500 flex items-center justify-center text-white text-xs font-bold">
+                    <div className="px-3 py-2.5 bg-gray-50 dark:bg-white/5 rounded-xl flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-full bg-[#0A0A0A] flex items-center justify-center text-white text-xs font-bold">
                         {getInitials(user.name)}
                       </div>
                       <div>
@@ -727,7 +700,7 @@ export default function Navbar() {
                     </Link>
                     {user.role === 'admin' && (
                       <Link to="/admin" className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/5">
-                        <Shield size={15} className="text-teal-500" /> Admin Panel
+                        <Shield size={15} className="text-gray-400" /> Admin Panel
                       </Link>
                     )}
                     <button onClick={handleLogout} className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-sm font-medium text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20">
@@ -736,10 +709,10 @@ export default function Navbar() {
                   </>
                 ) : (
                   <>
-                    <Link to="/login" className="block px-4 py-3 text-sm font-semibold text-primary-600 border border-primary-500/40 rounded-xl text-center">
+                    <Link to="/login" className="block px-4 py-3 text-sm font-semibold text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-brand-dark-border rounded-xl text-center">
                       Log in
                     </Link>
-                    <Link to="/register" className="block px-4 py-3 text-sm font-semibold text-white bg-gradient-to-r from-primary-500 to-teal-500 rounded-xl text-center">
+                    <Link to="/register" className="block px-4 py-3 text-sm font-semibold text-white bg-[#0A0A0A] rounded-xl text-center">
                       Sign Up Free
                     </Link>
                   </>
