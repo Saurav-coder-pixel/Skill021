@@ -24,7 +24,7 @@ const CONTACT_INFO = [
     bg: 'bg-primary-50 dark:bg-primary-900/20',
   },
   {
-    icon: Youtube,
+    icon: Play,
     label: 'YouTube',
     value: '@skills021',
     href: 'https://www.youtube.com/@skills021',
@@ -123,7 +123,7 @@ export default function Contact() {
               <h3 className="text-sm font-bold text-brand-text dark:text-brand-dark-text mb-4">Follow Us</h3>
               <div className="grid grid-cols-2 gap-2">
                 {[
-                  { label: 'YouTube', icon: Youtube, href: 'https://www.youtube.com/@skills021', color: 'hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-500' },
+                  { label: 'YouTube', icon: Play, href: 'https://www.youtube.com/@skills021', color: 'hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-500' },
                   {
                     label: 'Instagram',
                     icon: InstagramIcon,

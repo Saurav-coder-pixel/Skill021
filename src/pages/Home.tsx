@@ -162,13 +162,11 @@ export default function Home() {
                 transition={{ duration: 0.6, delay: 0.16 }}
                 className="text-base md:text-[17px] text-[#6B7280] dark:text-gray-400 leading-relaxed mb-8 max-w-lg"
               >
-                Programming courses, DSA prep, and university counseling
-                <br />
-                for{' '}
-                <span className="text-primary-500 font-semibold">AKTU</span>,{' '}
-                <span className="text-teal-500 font-semibold">IPU</span>,{' '}
-                <span className="text-amber-500 font-semibold">JoSAA</span>{' '}&{' '}
-                <span className="text-green-600 font-semibold">JAC Delhi</span>{' '}students.
+                Build Skills From{' '}
+                {/* <br /> */}
+                <span className="text-red-500 font-semibold">Zero</span>{'-'}
+                <span className="text-teal-500 font-semibold">To</span>{'-'}
+                <span className="text-green-600 font-semibold">One</span>{' '}
               </motion.p>
 
               {/* CTA Buttons */}
@@ -303,14 +301,14 @@ export default function Home() {
               {
                 icon: Target,
                 title: 'Expert-Led Courses',
-                desc: 'DSA, Java, Python, Django, DevOps — everything you need to crack placements and build real projects.',
+                desc: 'Build Skill from',
                 color: 'text-primary-500',
                 bg: 'bg-primary-50 dark:bg-primary-900/20',
               },
               {
                 icon: Building2,
                 title: 'University Counseling',
-                desc: 'Expert guidance for AKTU, IPU, JoSAA, and JAC Delhi counseling rounds — from choice filling to final allotment.',
+                desc: 'Zero to One',
                 color: 'text-teal-500',
                 bg: 'bg-teal-50 dark:bg-teal-900/20',
               },
