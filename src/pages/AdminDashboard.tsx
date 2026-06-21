@@ -5,7 +5,7 @@ import {
   Users, GraduationCap, Star, Settings, Plus, Edit2, Trash2, Search,
   X, Shield, UserCheck, UserX, TrendingUp, Eye, Download, EyeOff,
   CheckCircle, Clock, MoreVertical, ChevronDown, Globe, Award, BookMarked,
-  MessageSquare, BarChart3, DollarSign, Zap
+  MessageSquare, BarChart3, DollarSign, Zap, Video
 } from 'lucide-react'
 import { useContentStore, Course, Resource, Quiz, Roadmap } from '../store/contentStore'
 import { useEventStore, Hackathon } from '../store/eventStore'
@@ -15,13 +15,14 @@ import { useMentorStore } from '../store/mentorStore'
 import { useTestimonialsStore } from '../store/testimonialsStore'
 import { useGuidanceStore } from '../store/guidanceStore'
 import { useCounselingRequestStore } from '../store/counselingRequestStore'
+import { useVideoStore, YouTubeVideo } from '../store/videoStore'
 import toast from 'react-hot-toast'
 
 type AdminTab =
   | 'overview' | 'courses' | 'resources' | 'quizzes' | 'roadmaps'
   | 'hackathons' | 'internships' | 'counseling' | 'mentorship'
   | 'guidance-requests' | 'counseling-requests'
-  | 'testimonials' | 'users' | 'settings'
+  | 'testimonials' | 'youtube-videos' | 'users' | 'settings'
 
 const sidebarItems: { id: AdminTab; label: string; icon: typeof LayoutDashboard; group?: string }[] = [
   { id: 'overview', label: 'Overview', icon: LayoutDashboard },
@@ -29,6 +30,7 @@ const sidebarItems: { id: AdminTab; label: string; icon: typeof LayoutDashboard;
   { id: 'resources', label: 'Resources', icon: FileText, group: 'Content' },
   { id: 'quizzes', label: 'Quizzes', icon: HelpCircle, group: 'Content' },
   { id: 'roadmaps', label: 'Roadmaps', icon: Map, group: 'Content' },
+  { id: 'youtube-videos', label: 'YouTube Videos', icon: Video, group: 'Content' },
   { id: 'hackathons', label: 'Hackathons', icon: Trophy, group: 'Events' },
   { id: 'internships', label: 'Internships', icon: Briefcase, group: 'Events' },
   { id: 'counseling', label: 'Counseling', icon: GraduationCap, group: 'Services' },
@@ -1099,6 +1101,167 @@ export default function AdminDashboard() {
     )
   }
 
+  // ─── YouTube Videos ──────────────────────────────────────────────────────────
+  const renderYoutubeVideos = () => {
+    const videoStore = useVideoStore()
+    const videos = videoStore.videos
+    const [editingVideo, setEditingVideo] = useState<YouTubeVideo | null>(null)
+    const [formData, setFormData] = useState<Partial<YouTubeVideo>>({
+      youtubeUrl: '',
+      title: '',
+      description: '',
+      category: 'DSA',
+      featured: false,
+      status: 'Draft',
+    })
+    const [deleteId, setDeleteId] = useState<string | null>(null)
+
+    const categories: Array<import('../store/videoStore').VideoCategory> = [
+      'DSA', 'JEE', 'NEET', 'AI/ML', 'Counseling', 'Career Guidance', 'Interview Prep', 'Web Development', 'Python', 'Aptitude', 'Study Tips'
+    ]
+
+    const handleAdd = () => {
+      setEditingVideo(null)
+      setFormData({ youtubeUrl: '', title: '', description: '', category: 'DSA', featured: false, status: 'Draft' })
+    }
+
+    const handleEdit = (video: YouTubeVideo) => {
+      setEditingVideo(video)
+      setFormData(video)
+    }
+
+    const handleSave = () => {
+      if (!formData.youtubeUrl || !formData.title) {
+        toast.error('Please fill in required fields')
+        return
+      }
+      if (editingVideo) {
+        videoStore.updateVideo(editingVideo.id, formData as Partial<YouTubeVideo>)
+        toast.success('Video updated successfully')
+      } else {
+        videoStore.addVideo(formData as Omit<YouTubeVideo, 'id' | 'createdAt' | 'videoId' | 'thumbnail'>)
+        toast.success('Video added successfully')
+      }
+      setEditingVideo(null)
+      setFormData({ youtubeUrl: '', title: '', description: '', category: 'DSA', featured: false, status: 'Draft' })
+    }
+
+    const handleDelete = (id: string) => {
+      videoStore.deleteVideo(id)
+      toast.success('Video deleted successfully')
+      setDeleteId(null)
+    }
+
+    const filtered = videos.filter(v => v.title.toLowerCase().includes(search.toLowerCase()))
+
+    return (
+      <div>
+        <SectionHeader title="YouTube Videos" count={videos.length} onAdd={handleAdd} addLabel="Add Video" />
+        <SearchBar value={search} onChange={setSearch} placeholder="Search videos..." />
+
+        {/* Edit Form */}
+        {editingVideo !== null && (
+          <div className="card p-6 mb-6 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800">
+            <h3 className="text-lg font-bold text-brand-text dark:text-brand-dark-text mb-4">{editingVideo ? 'Edit Video' : 'Add New Video'}</h3>
+            <div className="grid gap-4">
+              <div>
+                <label className="text-sm font-semibold text-brand-text dark:text-brand-dark-text mb-2 block">YouTube URL *</label>
+                <input type="url" value={formData.youtubeUrl || ''} onChange={(e) => setFormData({ ...formData, youtubeUrl: e.target.value })} placeholder="https://www.youtube.com/watch?v=..." className="w-full px-3 py-2 rounded-lg border border-brand-border dark:border-brand-dark-border bg-white dark:bg-brand-dark-bg text-brand-text dark:text-brand-dark-text text-sm" />
+              </div>
+              <div>
+                <label className="text-sm font-semibold text-brand-text dark:text-brand-dark-text mb-2 block">Video Title *</label>
+                <input type="text" value={formData.title || ''} onChange={(e) => setFormData({ ...formData, title: e.target.value })} placeholder="Enter video title" className="w-full px-3 py-2 rounded-lg border border-brand-border dark:border-brand-dark-border bg-white dark:bg-brand-dark-bg text-brand-text dark:text-brand-dark-text text-sm" />
+              </div>
+              <div>
+                <label className="text-sm font-semibold text-brand-text dark:text-brand-dark-text mb-2 block">Description</label>
+                <textarea value={formData.description || ''} onChange={(e) => setFormData({ ...formData, description: e.target.value })} placeholder="Enter video description" rows={3} className="w-full px-3 py-2 rounded-lg border border-brand-border dark:border-brand-dark-border bg-white dark:bg-brand-dark-bg text-brand-text dark:text-brand-dark-text text-sm" />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-sm font-semibold text-brand-text dark:text-brand-dark-text mb-2 block">Category</label>
+                  <select value={formData.category || 'DSA'} onChange={(e) => setFormData({ ...formData, category: e.target.value as any })} className="w-full px-3 py-2 rounded-lg border border-brand-border dark:border-brand-dark-border bg-white dark:bg-brand-dark-bg text-brand-text dark:text-brand-dark-text text-sm">
+                    {categories.map(cat => <option key={cat} value={cat}>{cat}</option>)}
+                  </select>
+                </div>
+                <div>
+                  <label className="text-sm font-semibold text-brand-text dark:text-brand-dark-text mb-2 block">Status</label>
+                  <select value={formData.status || 'Draft'} onChange={(e) => setFormData({ ...formData, status: e.target.value as 'Published' | 'Draft' })} className="w-full px-3 py-2 rounded-lg border border-brand-border dark:border-brand-dark-border bg-white dark:bg-brand-dark-bg text-brand-text dark:text-brand-dark-text text-sm">
+                    <option value="Draft">Draft</option>
+                    <option value="Published">Published</option>
+                  </select>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <input type="checkbox" id="featured" checked={formData.featured || false} onChange={(e) => setFormData({ ...formData, featured: e.target.checked })} className="rounded" />
+                <label htmlFor="featured" className="text-sm font-semibold text-brand-text dark:text-brand-dark-text">Featured Video</label>
+              </div>
+              <div className="flex gap-3">
+                <button onClick={handleSave} className="flex-1 py-2.5 bg-primary-500 text-white rounded-lg font-semibold hover:bg-primary-600">Save Video</button>
+                <button onClick={() => { setEditingVideo(null); setFormData({ youtubeUrl: '', title: '', description: '', category: 'DSA', featured: false, status: 'Draft' }) }} className="flex-1 py-2.5 border border-brand-border dark:border-brand-dark-border text-brand-text dark:text-brand-dark-text rounded-lg font-semibold hover:bg-gray-50 dark:hover:bg-white/5">Cancel</button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Videos List */}
+        <div className="card overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead className="bg-gray-50 dark:bg-white/5">
+                <tr>{['Thumbnail', 'Title', 'Category', 'Status', 'Featured', 'Order', 'Actions'].map(h => (
+                  <th key={h} className="px-4 py-3 text-left text-xs font-semibold text-brand-muted dark:text-brand-dark-muted uppercase tracking-wider whitespace-nowrap">{h}</th>
+                ))}</tr>
+              </thead>
+              <tbody className="divide-y divide-brand-border dark:divide-brand-dark-border">
+                {filtered.map((video) => (
+                  <tr key={video.id} className="hover:bg-gray-50 dark:hover:bg-white/5">
+                    <td className="px-4 py-3">
+                      <img src={video.thumbnail} alt={video.title} className="w-16 h-9 rounded object-cover" onError={(e) => { e.currentTarget.src = 'https://via.placeholder.com/64x36?text=Thumbnail' }} />
+                    </td>
+                    <td className="px-4 py-3">
+                      <div>
+                        <div className="font-medium text-brand-text dark:text-brand-dark-text line-clamp-1">{video.title}</div>
+                        <div className="text-xs text-brand-muted dark:text-brand-dark-muted">{video.uploadDate}</div>
+                      </div>
+                    </td>
+                    <td className="px-4 py-3">
+                      <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400">{video.category}</span>
+                    </td>
+                    <td className="px-4 py-3"><StatusBadge status={video.status} /></td>
+                    <td className="px-4 py-3">{video.featured ? '⭐ Yes' : 'No'}</td>
+                    <td className="px-4 py-3 text-center">{video.order}</td>
+                    <td className="px-4 py-3">
+                      <div className="flex items-center gap-1">
+                        <button onClick={() => videoStore.toggleFeatured(video.id)} className="p-1.5 rounded-lg hover:bg-yellow-100 dark:hover:bg-yellow-900/20 text-yellow-600" title="Toggle featured">⭐</button>
+                        <button onClick={() => videoStore.toggleVideoStatus(video.id)} className="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-white/10 text-brand-muted"><EyeOff size={14} /></button>
+                        <button onClick={() => handleEdit(video)} className="p-1.5 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-900/20 text-primary-500"><Edit2 size={14} /></button>
+                        <button onClick={() => setDeleteId(video.id)} className="p-1.5 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 text-red-500"><Trash2 size={14} /></button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+                {filtered.length === 0 && (
+                  <tr><td colSpan={7} className="px-4 py-8 text-center text-brand-muted text-sm">No videos found.</td></tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* Delete Modal */}
+        <AnimatePresence>
+          {deleteId && (
+            <DeleteModal
+              title={videos.find(v => v.id === deleteId)?.title || ''}
+              onConfirm={() => handleDelete(deleteId)}
+              onCancel={() => setDeleteId(null)}
+            />
+          )}
+        </AnimatePresence>
+      </div>
+    )
+  }
+
   // ─── Settings ────────────────────────────────────────────────────────────────
   const renderSettings = () => (
     <div className="space-y-6">
@@ -1319,6 +1482,7 @@ export default function AdminDashboard() {
       case 'guidance-requests': return renderGuidanceRequests()
       case 'counseling-requests': return renderCounselingRequests()
       case 'testimonials': return renderTestimonials()
+      case 'youtube-videos': return renderYoutubeVideos()
       case 'users': return renderUsers()
       case 'settings': return renderSettings()
       default: return null

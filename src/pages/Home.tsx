@@ -1,13 +1,15 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { motion, useInView } from 'framer-motion'
+import { motion, useInView, AnimatePresence } from 'framer-motion'
 import {
   Target, Building2, Trophy, ArrowRight, Play,
   ChevronRight, Code2, Users2, Video, GraduationCap, BookOpen,
-  FileText, Briefcase
+  FileText, Briefcase, X
 } from 'lucide-react'
 import CourseCard from '../components/CourseCard'
 import HackathonCard from '../components/HackathonCard'
+import VideoCarousel from '../components/VideoCarousel'
+import { YouTubeVideo } from '../store/videoStore'
 import { courses } from '../data/courses'
 import { hackathons } from '../data/hackathons'
 
@@ -92,6 +94,8 @@ const testimonials = [
 ]
 
 export default function Home() {
+  const [selectedVideo, setSelectedVideo] = useState<YouTubeVideo | null>(null)
+
   return (
     <div className="min-h-screen bg-white dark:bg-brand-dark-bg">
 
@@ -362,43 +366,101 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ─── YOUTUBE SECTION ─── */}
-      <section className="py-16 bg-gray-50 dark:bg-brand-dark-card border-y border-gray-100 dark:border-brand-dark-border">
+      {/* ═══════════════════════════════════════════════
+          PREMIUM YOUTUBE VIDEO SHOWCASE
+          ═══════════════════════════════════════════════ */}
+      <section className="py-16 bg-white dark:bg-brand-dark-bg border-b border-gray-100 dark:border-brand-dark-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-2xl mx-auto text-center">
-            <div className="w-14 h-14 bg-[#0A0A0A] rounded-2xl flex items-center justify-center mx-auto mb-6">
-              <Play size={26} className="text-white ml-0.5" />
-            </div>
-            <h2 className="section-title mb-4">Free Tutorials on YouTube</h2>
-            <p className="text-brand-muted dark:text-brand-dark-muted mb-8 text-lg">
-              Watch 150+ free video lectures on DSA, Java, Python, Django, and more.
-              Subscribe to never miss a new tutorial.
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <a
-                href="https://www.youtube.com/@skills021"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 px-8 py-4 bg-[#0A0A0A] text-white font-semibold rounded-xl hover:bg-gray-800 transition-all duration-200 w-full sm:w-auto justify-center"
-              >
-                <Play size={18} />
-                Subscribe Now
-              </a>
-              <a
-                href="https://www.youtube.com/@skills021"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 px-8 py-4 border border-gray-300 dark:border-brand-dark-border text-brand-text dark:text-brand-dark-text font-semibold rounded-xl hover:bg-gray-100 dark:hover:bg-white/5 transition-all duration-200 w-full sm:w-auto justify-center"
-              >
-                Watch Tutorials
-              </a>
-            </div>
-            <p className="text-sm text-brand-muted dark:text-brand-dark-muted mt-4">
-              youtube.com/@skills021 · 12,000+ subscribers · 150+ videos
-            </p>
+          {/* Section Header */}
+          <div className="max-w-2xl mx-auto text-center mb-12">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+            >
+              <h2 className="section-title mb-3">Learn Free with Skill021</h2>
+              <p className="section-subtitle">
+                Watch our latest educational videos, tutorials, guidance sessions, hackathon tips, and career roadmaps directly from YouTube.
+              </p>
+            </motion.div>
           </div>
+
+          {/* Video Carousel */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          >
+            <VideoCarousel onVideoPlay={setSelectedVideo} showViewAllButton={true} />
+          </motion.div>
         </div>
       </section>
+
+      {/* ═══════════════════════════════════════════════
+          VIDEO MODAL
+          ═══════════════════════════════════════════════ */}
+      <AnimatePresence>
+        {selectedVideo && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSelectedVideo(null)}
+            className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4"
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              onClick={(e) => e.stopPropagation()}
+              className="relative w-full max-w-4xl bg-black rounded-2xl overflow-hidden"
+            >
+              {/* Close Button */}
+              <button
+                onClick={() => setSelectedVideo(null)}
+                className="absolute top-4 right-4 z-10 p-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors"
+              >
+                <X size={24} className="text-white" />
+              </button>
+
+              {/* Video Container */}
+              <div className="aspect-video">
+                <iframe
+                  width="100%"
+                  height="100%"
+                  src={`https://www.youtube.com/embed/${selectedVideo.videoId}`}
+                  title={selectedVideo.title}
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  className="w-full h-full"
+                />
+              </div>
+
+              {/* Video Info */}
+              <div className="bg-gray-900 p-6">
+                <h3 className="text-xl font-bold text-white mb-2">{selectedVideo.title}</h3>
+                <p className="text-gray-300 text-sm mb-4">{selectedVideo.description}</p>
+                <div className="flex items-center gap-3">
+                  <span className="text-xs font-semibold text-white bg-red-600 px-3 py-1 rounded-full">
+                    {selectedVideo.category}
+                  </span>
+                  <a
+                    href={selectedVideo.youtubeUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm text-blue-400 hover:text-blue-300 transition-colors"
+                  >
+                    Watch on YouTube →
+                  </a>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* ─── TESTIMONIALS ─── */}
       <section className="py-16 bg-white dark:bg-brand-dark-bg">
